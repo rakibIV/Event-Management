@@ -9,3 +9,6 @@ def home(request):
 
 def check(request):
     return HttpResponse("from event")
+
+def dashboard(request):
+    return render(request,"dashboard.html")
