@@ -12,3 +12,11 @@ def check(request):
 
 def dashboard(request):
     return render(request,"dashboard.html")
+
+
+def book_now(request):
+    return render(request,"book_now.html")
+
+
+def navbar(request):
+    return render(request,"navbar.html")

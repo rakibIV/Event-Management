@@ -1,0 +1,6 @@
+
+.bg-party {
+    background-image: url('/static/images/party.jpg');
+    background-size: cover;
+    background-position: center;
+}

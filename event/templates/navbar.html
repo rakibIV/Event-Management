@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+    <title>Document</title>
+</head>
+<body>
+  <div class= "bg-indigo-600">
+    <nav class=" flex items-center justify-between px-4 rounded pb-6 max-width-[1400px] w-[90%] mx-auto pt-3">
+      <div class="w-32">
+        <img src="{% static "images/logo.png" %}" alt="" />
+      </div>
+
+      <div>
+        <ul class="flex gap-12 items-center hover:cursor-pointer text-lg text-white">
+          <li class="hover:text-blue-500">Home</li>
+          <li class="hover:text-blue-500">About</li>
+          <li class="hover:text-blue-500">Price</li>
+          <a href="{% url "book_now" %}">
+            <button
+            type="button"
+            class="bg-white text-indigo-500 border border-indigo-500 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 px-4 py-2 rounded cursor-pointer"
+          >
+            Book Now
+          </button>
+          </a>
+          
+        </ul>
+      </div>
+    </nav>
+  </div>
+    
+
+
+        {% block event %}
+        
+        {% endblock event %}
+</body>
+</html>
