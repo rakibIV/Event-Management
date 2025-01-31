@@ -13,7 +13,7 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="{% static "css/style.css" %}" />
-    <title>Document</title>
+    <title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
   <div class= "bg-indigo-600">
@@ -24,16 +24,14 @@
 
       <div>
         <ul class="flex gap-12 items-center hover:cursor-pointer text-lg text-white">
-          <li class="hover:text-blue-500">Home</li>
+          <a href="{% url "dashboard" %}"><li class="hover:text-blue-500">Home</li></a>
           <li class="hover:text-blue-500">About</li>
           <li class="hover:text-blue-500">Price</li>
-          <a href="{% url "book_now" %}">
-            <button
-            type="button"
+          <a href="{% url "book_now" %}"
+            target="_blank"
             class="bg-white text-indigo-500 border border-indigo-500 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 px-4 py-2 rounded cursor-pointer"
-          >
+            >
             Book Now
-          </button>
           </a>
           
         </ul>

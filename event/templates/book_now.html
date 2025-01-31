@@ -1,5 +1,6 @@
 {% extends "navbar.html" %}
 {% load static %}
+{% block title %}Book Event{% endblock title %}
 {% block event %}
 <div>
   <div>
@@ -38,7 +39,10 @@
         </div>
 
         <div class="text-center">
-          <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Add Category</button>
+          <a href="{% url "add_category" %}">
+            <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Add Category</button>
+          </a>
+          
         </div>
 
       </div>
@@ -66,7 +70,10 @@
         </div>
 
         <div class="text-center">
-          <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Create Event</button>
+          <a href="{% url "create_event" %}">
+            <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Add Event</button>
+          </a>
+          
         </div>
 
       </div>
@@ -94,7 +101,10 @@
         </div>
 
         <div class="text-center">
-          <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Add Participants</button>
+          <a href="{% url "add_participant" %}">
+            <button class="p-4 bg-indigo-600 rounded-xl text-white border hover:border-indigo-500 hover:bg-white hover:text-indigo-500 cursor-pointer">Add Participants</button>
+          </a>
+          
         </div>
 
       </div>
