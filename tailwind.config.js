@@ -6,7 +6,11 @@ module.exports = {
     './static/**/*.css',
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        'custom-24': '24rem',
+      },
+    },
   },
   plugins: [],
 }

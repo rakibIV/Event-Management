@@ -1,8 +1,9 @@
 from django.urls import path
-from event.views import check,dashboard,book_now,navbar,create_event,add_category,add_participant,update_event,delete_event
+from event.views import check,home,book_now,navbar,create_event,add_category,add_participant,update_event,delete_event,dashboard
 
 urlpatterns = [
     path("check/",check),
+    path("home/",home,name="home"),
     path("dashboard/",dashboard,name="dashboard"),
     path("book_now/",book_now, name="book_now"),
     path("navbar/",navbar),

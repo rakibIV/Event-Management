@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -23,15 +24,17 @@
       </div>
 
       <div>
-        <ul class="flex gap-12 items-center hover:cursor-pointer text-lg text-white">
-          <a href="{% url "dashboard" %}"><li class="hover:text-blue-500">Home</li></a>
+        <ul class="flex gap-2 md:gap-12 items-center hover:cursor-pointer text-lg text-white">
+          <a href="{% url "home" %}"><li class="hover:text-blue-500">Home</li></a>
           <li class="hover:text-blue-500">About</li>
-          <li class="hover:text-blue-500">Price</li>
+          <li class="hidden md:block hover:text-blue-500">Price</li>
           <a href="{% url "book_now" %}"
-            target="_blank"
             class="bg-white text-indigo-500 border border-indigo-500 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 px-4 py-2 rounded cursor-pointer"
             >
-            Book Now
+            <span class="hidden md:inline">Book Now</span>
+            <span class="md:hidden">Book</span>
+
+            
           </a>
           
         </ul>

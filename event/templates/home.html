@@ -1,0 +1,105 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+{% block event %}
+<div class="max-w-[1400px] w-[90%] mx-auto mt-5">
+  <!-- Top Section -->
+  <section class="px-4 min-h-[80vh] flex flex-col justify-center">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+      <!-- Left side box -->
+      <div class="order-2 md:order-1 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold ">
+          Your Event <br />
+          <span class="inline-block my-2"></span>
+          Our Effort...
+        </h1>
+        <a href="{% url 'dashboard' %}"
+          class="inline-block mt-6 bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-8 py-3 rounded transition duration-300 ease-in-out text-lg">
+          Dashboard
+        </a>
+      </div>
+  
+      <!-- Image section -->
+      <div class="order-1 md:order-2">
+        <img 
+          class="mx-auto md:mx-0 object-contain max-h-[50vh]" 
+          src="{% static 'images/top.png' %}" 
+          alt="Event Image" 
+        />
+      </div>
+    </div>
+    <hr class="border-b border-gray-200 border-dashed mt-8" />
+  </section>
+  
+  
+  <!-- Upcoming Events Section -->
+  <section class="px-4 mt-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h3 class="text-2xl font-semibold mb-4">Birthday Party</h3>
+        <p class="text-gray-600 mb-4">Date: March 15, 2025</p>
+        <p class="text-gray-600 mb-4">Location: Chattogram Convention Center</p>
+        <img src="https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Birthday Party" class="rounded mb-4">
+        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
+      </div>
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h3 class="text-2xl font-semibold mb-4">Wedding Ceremony</h3>
+        <p class="text-gray-600 mb-4">Date: April 25, 2025</p>
+        <p class="text-gray-600 mb-4">Location: Dhaka Expo Center</p>
+        <img src="https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Wedding Ceremony" class="rounded mb-4">
+        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
+      </div>
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h3 class="text-2xl font-semibold mb-4">Victory Day Party</h3>
+        <p class="text-gray-600 mb-4">Date: May 10, 2025</p>
+        <p class="text-gray-600 mb-4">Location: Sylhet Auditorium</p>
+        <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Victory Day Party" class="rounded mb-4">
+        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="px-4 mt-12">
+    <h2 class="text-3xl font-bold text-center mb-8">What Our Clients Say</h2>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Amazing event management! Our wedding was perfect thanks to their attention to detail."</p>
+        <p class="text-right text-gray-600 mt-4">- Rahat Khan</p>
+      </div>
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Professional and reliable. Our corporate event was a huge success."</p>
+        <p class="text-right text-gray-600 mt-4">- Jhankar Mahbub</p>
+      </div>
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Highly recommend! They made our conference run smoothly and efficiently."</p>
+        <p class="text-right text-gray-600 mt-4">- Asif Adnan</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section class="px-4 mt-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Get in Touch</h2>
+    <div class="container mx-auto max-w-xl">
+      <form class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
+          <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+          <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="mb-4">
+          <label for="message" class="block text-gray-700 font-bold mb-2">Message</label>
+          <textarea id="message" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-500 transition duration-300">Send Message</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock event %}

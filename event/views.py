@@ -8,14 +8,20 @@ from django.db.models import Count
 
 # Create your views here.
 
-def home(request):
-    return HttpResponse("Hello World!")
 
 
 def check(request):
     return HttpResponse("from event")
 
+def home(request):
+    context = {
+        
+    }
+    return render(request,"home.html",context)
+
+
 def dashboard(request):
+    
     type = request.GET.get('type','all')
     search = request.GET.get('q', '')
     print(type)
@@ -45,6 +51,7 @@ def dashboard(request):
         "past_events":past_events,
     }
     return render(request,"dashboard.html",context)
+    
 
 
 def book_now(request):
@@ -108,22 +115,22 @@ def add_participant(request):
 
 
 
-def update_event(request,id):
+def update_event(request, id):
     event = Event.objects.get(id=id)
-    form = EventModelForm(instance=event)
     if request.method == "POST":
-        form = EventModelForm(request.POST)
+        form = EventModelForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             messages.success(request, "Event Updated Successfully")
-            return redirect("create_event")
+            return redirect("dashboard")
+    else:
+        form = EventModelForm(instance=event)
 
-    
     context = {
-        "form" : form,
+        "form": form,
     }
     
-    return render(request,"user-input/event-form.html", context)
+    return render(request, "user-input/event-form.html", context)
 
 
 

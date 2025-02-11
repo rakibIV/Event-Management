@@ -1,230 +1,205 @@
 {% extends "navbar.html" %}
 {% load static %}
-{% block title %}Dashboard{% endblock title %}
+
+{% block title %}Category Form{% endblock title %}
 
 {% block event %}
-
 <div class="max-width-[1400px] w-[90%] mx-auto mt-5">
-  <!-- Top Section -->
-  <section>
+      
 
-    <div class="container mx-auto px-4 mt-8 md:mt-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
-        <!-- Left side box -->
-        <div class="text-center md:text-left">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold">
-            Your Event <br />
-            <span class="inline-block my-2"></span>
-            Our Effort...
-          </h1>
-          <img 
-            class="h-48 md:h-72 lg:h-96 mx-auto md:mx-0 mt-6 object-contain" 
-            src="{% static 'images/top.png' %}" 
-            alt="" 
-          />
-        </div>
+    <!-- Stats Grid -->
+
+    <div class="container mx-auto px-4">
+        {% if messages %}
+            <div class="flex items-center px-4 py-3 mb-4 rounded-lg shadow-md  bg-green-400 text-white mt-5">
+                
+                    {% for message in messages %}
+                    <span>{{ message }}</span>
+                    {% endfor %}
+                
+            </div>
+            {% endif %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-12">
+          <!-- Total Event -->
+          <a href="{% url 'dashboard' %}?type=all" class="">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg">
+              <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
+                TOTAL EVENTS
+              </h2>
+              <div class="flex items-center justify-between">
+                <p class="text-2xl md:text-3xl font-semibold mb-1">{{events.count}}</p>
+                <button
+                  class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-blue-100 text-blue-500 rounded-full drop-shadow-sm flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-clipboard"></i>
+                </button>
+              </div>
+              <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
+            </div>
+          </a>
     
-        <!-- Search section -->
-        <div class="w-full max-w-xl mx-auto md:mx-0">
+          <!-- Total perticipants -->
+    
+          <a href="" class="">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg">
+              <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
+                TOTAL PARTICIPANTS
+              </h2>
+              <div class="flex items-center justify-between">
+                <p class="text-2xl md:text-3xl font-semibold mb-1">{{participants.count}}</p>
+                <button
+                  class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-gray-100 text-gray-500 rounded-full drop-shadow-sm flex items-center justify-center"
+                >
+                <i class="fa-solid fa-users"></i>
+                </button>
+              </div>
+              <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
+            </div>
+          </a>
+      
+          <!-- Upcoming events -->
+          <a href="{% url 'dashboard' %}?type=upcoming" class="">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg">
+              <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
+                UPCOMING EVENTS
+              </h2>
+              <div class="flex items-center justify-between">
+                <p class="text-2xl md:text-3xl font-semibold mb-1">{{up_events.count}}</p>
+                <button
+                  class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-yellow-100 text-yellow-500 rounded-full drop-shadow-sm flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-clock"></i>
+                </button>
+              </div>
+              <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
+            </div>
+          </a>
+      
+          <!-- Past Events -->
+          <a href="{% url 'dashboard' %}?type=past" class="">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md hover:shadow-lg">
+              <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
+                PAST EVENTS
+              </h2>
+              <div class="flex items-center justify-between">
+                <p class="text-2xl md:text-3xl font-semibold mb-1">{{past_events.count}}</p>
+                <button
+                  class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-green-100 text-green-500 rounded-full drop-shadow-sm flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-circle-check"></i>
+                </button>
+              </div>
+              <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <hr class="border-b border-gray-100 border-dashed mt-8 mb-5" />
+
+      <div class="container mx-auto px-4 mt-8 md:mt-12 grid md:grid-cols-2">
+        <div></div>
+
+        <div class="w-full max-w-md ml-auto md:text-right">
           <form class="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-300 py-4"
-          action = "{% url 'dashboard' %}"
-          method = "GET"
->
+            action="{% url 'dashboard' %}"
+            method="GET">
             <input
-              class="w-full bg-transparent border-none text-gray-700 text-lg md:text-xl lg:text-2xl py-2 px-4 focus:outline-none"
+              class="w-full bg-transparent border-none text-gray-700 text-base md:text-lg py-2 px-4 focus:outline-none"
               type="text"
-              name = "q"
+              name="q"
               placeholder="Search...(Event Name)"
               value="{{ request.GET.q }}"
             />
-              <button
-                class="w-full sm:w-auto bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-8 sm:px-12 py-3 rounded transition duration-300 ease-in-out text-lg"
-                type="submit"
-                
-              >
-                Search
-              </button>
+            <button
+              class="w-full sm:w-auto bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-6 sm:px-8 py-2 rounded transition duration-300 ease-in-out text-base md:text-lg"
+              type="submit">
+              Search
+            </button>
           </form>
-
-
         </div>
+        
       </div>
-    </div>
-    <hr class="border-b border-gray-100 border-dashed" />
-  </section>
-
-  <!-- Stats Grid -->
-
-  <div class="container mx-auto px-4">
-    {% if messages %}
-        <div class="flex items-center px-4 py-3 mb-4 rounded-lg shadow-md bg-red-600 text-white mt-5">
-            
-                {% for message in messages %}
-                <span>{{ message }}</span>
-                {% endfor %}
-            
-        </div>
-        {% endif %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6">
-      <!-- Total Event -->
-      <a href="{% url 'dashboard' %}?type=all" class="">
-        <div class="bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-md ">
-          <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
-            TOTAL EVENTS
-          </h2>
-          <div class="flex items-center justify-between">
-            <p class="text-2xl md:text-3xl font-semibold mb-1">{{events.count}}</p>
-            <button
-              class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-blue-100 text-blue-500 rounded-full drop-shadow-sm flex items-center justify-center"
-            >
-              <i class="fa-regular fa-clipboard"></i>
-            </button>
-          </div>
-          <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
-        </div>
-      </a>
-
-      <!-- Total perticipants -->
-
-      <a href="" class="">
-        <div class="bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-md">
-          <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
-            TOTAL PARTICIPANTS
-          </h2>
-          <div class="flex items-center justify-between">
-            <p class="text-2xl md:text-3xl font-semibold mb-1">{{participants.count}}</p>
-            <button
-              class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-gray-100 text-gray-500 rounded-full drop-shadow-sm flex items-center justify-center"
-            >
-            <i class="fa-solid fa-users"></i>
-            </button>
-          </div>
-          <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
-        </div>
-      </a>
-  
-      <!-- Upcoming events -->
-      <a href="{% url 'dashboard' %}?type=upcoming" class="">
-        <div class="bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-md">
-          <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
-            UPCOMING EVENTS
-          </h2>
-          <div class="flex items-center justify-between">
-            <p class="text-2xl md:text-3xl font-semibold mb-1">{{up_events.count}}</p>
-            <button
-              class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-yellow-100 text-yellow-500 rounded-full drop-shadow-sm flex items-center justify-center"
-            >
-              <i class="fa-regular fa-clock"></i>
-            </button>
-          </div>
-          <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
-        </div>
-      </a>
-  
-      <!-- Past Events -->
-      <a href="{% url 'dashboard' %}?type=past" class="">
-        <div class="bg-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-md">
-          <h2 class="text-sm md:text-base font-medium text-gray-500 mb-4">
-            PAST EVENTS
-          </h2>
-          <div class="flex items-center justify-between">
-            <p class="text-2xl md:text-3xl font-semibold mb-1">{{past_events.count}}</p>
-            <button
-              class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-green-100 text-green-500 rounded-full drop-shadow-sm flex items-center justify-center"
-            >
-              <i class="fa-regular fa-circle-check"></i>
-            </button>
-          </div>
-          <p class="text-xs md:text-sm font-medium text-gray-400">111 Last Month</p>
-        </div>
-      </a>
-    </div>
-  </div>
-  <!-- Card Sections -->
-
-  <section class="container mx-auto px-4 my-9">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- First Card -->
-      {% for event in events %}
-
-      <div class="bg-white border border-gray-100 rounded-lg shadow-lg overflow-hidden">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <div class="relative h-48 md:h-full">
-            <img 
-              class="w-full h-full object-cover" 
-              src="{% static 'images/party.jpg' %}" 
-              alt="Event party" 
-            />
-          </div>
-  
-          
-          <div class="p-4 md:p-5 flex flex-col h-full">
-            
-            <div class="flex justify-between text-lg md:text-xl mb-4">
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-user"></i>
-                <span>{{event.participants.count}}</span>
+      <!-- Card Sections -->
+    
+      <section class="container mx-auto px-4 my-9">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- First Card -->
+          {% for event in events %}
+    
+          <div class="bg-white border border-gray-100 rounded-lg shadow-lg overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div class="relative h-48 md:h-full">
+                <img 
+                  class="w-full h-full object-cover" 
+                  src="{% static 'images/party.jpg' %}" 
+                  alt="Event party" 
+                />
               </div>
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>{{event.location|slice:":12"}}</span>
+      
+              
+              <div class="p-4 md:p-5 flex flex-col h-full">
+                
+                <div class="flex justify-between text-lg md:text-xl mb-4">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user"></i>
+                    <span>{{event.participants.count}}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>{{event.location|slice:":12"}}</span>
+                  </div>
+                </div>
+      
+                
+                <div class="flex-grow">
+                  <h3 class="font-medium mb-2">{{event.name}}</h3>
+                  <p>
+                    <span><i class="fa-regular fa-clock"></i></span>
+                    Event Date : {{event.date |date:"d F, y"}}</p>
+                  <p class="text-gray-600 text-sm md:text-base">
+                    {{event.description | slice:":85"}}....
+                  </p>
+                </div>
+      
+                
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                  
+                  <a href="{% url "update_event" event.id%}"
+                    
+                    class="flex items-center justify-center gap-2 bg-gray-600 text-white border border-gray-300 hover:bg-white hover:text-gray-500 hover:border-gray-500 px-3 py-2 rounded cursor-pointer"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    
+                    <span>Edit</span>
+                  
+                  </a>
+                  <form action="{% url "delete_event" event.id %}" method="POST" class="flex items-center justify-center gap-2 bg-red-600 text-white border border-red-500 hover:bg-white hover:text-red-500 hover:border-red-500 px-3 py-2 rounded cursor-pointer">
+                    {% csrf_token %}
+                    <button type = "submit"
+                    
+                    
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                    <span>Remove</span>
+                  </button>
+                  </form>
+                
+                  
+                </div>
               </div>
             </div>
-  
-            
-            <div class="flex-grow">
-              <h3 class="font-medium mb-2">{{event.name}}</h3>
-              <p>
-                <span><i class="fa-regular fa-clock"></i></span>
-                Event Date : {{event.date |date:"d F, y"}}</p>
-              <p class="text-gray-600 text-sm md:text-base">
-                {{event.description | slice:":85"}}....
-              </p>
-            </div>
-  
-            
-            <div class="grid grid-cols-2 gap-4 mt-4">
-              
-              <a href="{% url "update_event" event.id%}"
-                
-                class="flex items-center justify-center gap-2 bg-gray-600 text-white border border-gray-300 hover:bg-white hover:text-gray-500 hover:border-gray-500 px-3 py-2 rounded cursor-pointer"
-              >
-                <i class="fa-solid fa-pen-to-square"></i>
-                
-                <span>Edit</span>
-              
-              </a>
-              <form action="{% url "delete_event" event.id %}" method="POST" class="flex items-center justify-center gap-2 bg-red-600 text-white border border-red-500 hover:bg-white hover:text-red-500 hover:border-red-500 px-3 py-2 rounded cursor-pointer">
-                {% csrf_token %}
-                <button type = "submit"
-                
-                
-              >
-                <i class="fa-solid fa-trash"></i>
-                <span>Remove</span>
-              </button>
-              </form>
-            
-              
-            </div>
           </div>
+          {% endfor %}
+      
+          <!-- Second Card -->
+    
+          
+          
         </div>
-      </div>
-      {% endfor %}
-  
-      <!-- Second Card -->
-
-      
-      
-    </div>
-  </section>
-
-
-
-
+      </section>
 
 
 </div>
-
 {% endblock event %}
