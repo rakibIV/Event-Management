@@ -15,8 +15,9 @@
           Our Effort...
         </h1>
         <a href="{% url 'dashboard' %}"
-          class="inline-block mt-6 bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-8 py-3 rounded transition duration-300 ease-in-out text-lg">
-          Dashboard
+          class="inline-block justify-between mt-6 bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-8 py-3 rounded transition duration-300 ease-in-out text-lg">
+          <span>Take a look</span>
+          <i class="text-base fa-solid fa-arrow-right"></i>
         </a>
       </div>
   
@@ -34,30 +35,19 @@
   
   
   <!-- Upcoming Events Section -->
-  <section class="px-4 mt-12">
+  <section class="px-4">
     <h2 class="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-2xl font-semibold mb-4">Birthday Party</h3>
-        <p class="text-gray-600 mb-4">Date: March 15, 2025</p>
-        <p class="text-gray-600 mb-4">Location: Chattogram Convention Center</p>
-        <img src="https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Birthday Party" class="rounded mb-4">
-        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
-      </div>
-      <div class="bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-2xl font-semibold mb-4">Wedding Ceremony</h3>
-        <p class="text-gray-600 mb-4">Date: April 25, 2025</p>
-        <p class="text-gray-600 mb-4">Location: Dhaka Expo Center</p>
-        <img src="https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Wedding Ceremony" class="rounded mb-4">
-        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
-      </div>
-      <div class="bg-white shadow-lg rounded-lg p-6">
-        <h3 class="text-2xl font-semibold mb-4">Victory Day Party</h3>
-        <p class="text-gray-600 mb-4">Date: May 10, 2025</p>
-        <p class="text-gray-600 mb-4">Location: Sylhet Auditorium</p>
-        <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Victory Day Party" class="rounded mb-4">
-        <a href="#" class="text-blue-700 hover:underline">Learn More</a>
-      </div>
+      {% for event in up_events %}
+        <div class="bg-white shadow-lg rounded-lg p-6">
+          <h3 class="text-2xl font-semibold mb-4">{{event.name}}</h3>
+          <p class="text-gray-600 mb-4">Date: {{event.date}}</p>
+          <p class="text-gray-600 mb-4">Location: {{event.location}}</p>
+          <img src="https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Birthday Party" class="rounded mb-4">
+          <a href="#" class="text-blue-700 hover:underline">Learn More</a>
+        </div>
+      {% endfor %}
+      
     </div>
   </section>
   

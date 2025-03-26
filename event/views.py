@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from event.forms import EventModelForm,CategoryModelForm,ParticipantModelForm
+from event.forms import EventModelForm,CategoryModelForm
 from django.contrib import messages
-from event.models import Event, Category, Participant
+from event.models import Event, Category
 from datetime import date
 from django.db.models import Count
 
@@ -14,8 +14,11 @@ def check(request):
     return HttpResponse("from event")
 
 def home(request):
+    events = Event.objects.select_related("category")
+    today = date.today()
+    up_events = events.filter(date__gte=today)
     context = {
-        
+        "up_events": up_events,
     }
     return render(request,"home.html",context)
 
@@ -27,13 +30,13 @@ def dashboard(request):
     print(type)
     
     
-    events = Event.objects.select_related("category").prefetch_related("participants").annotate(participant_count=Count('participants'))
+    events = Event.objects.select_related("category")
     today = date.today()
-    participants = Participant.objects.all()
+
     up_events = events.filter(date__gte=today)
     past_events = events.filter(date__lt=today)
     
-    base_query = Event.objects.select_related("category").prefetch_related("participants").annotate(participant_count=Count('participants'))
+    base_query = Event.objects.select_related("category")
     
     if type == 'upcoming':
         events = base_query.filter(date__gte=today)
@@ -46,7 +49,6 @@ def dashboard(request):
         events = events.filter(name__icontains=search)
     context = {
         "events":events,
-        "participants":participants,
         "up_events": up_events,
         "past_events":past_events,
     }
@@ -96,21 +98,6 @@ def add_category(request):
 
 
 
-def add_participant(request):
-    form = ParticipantModelForm()
-    if request.method == "POST":
-        form = ParticipantModelForm(request.POST)
-        if form.is_valid:
-            form.save()
-            messages.success(request,"Participant added successfully!")
-            return redirect("add_participant")
-        
-    context = {
-        "form": form
-    }
-    
-    return render(request,"user-input/participants-form.html",context)
-
 
 
 
@@ -139,7 +126,6 @@ def delete_event(request,id):
         event = Event.objects.get(id=id)
         event.delete()
         messages.success(request,"Event Deleted succesfully!")
-        Participant.objects.annotate(event_count=Count('events')).filter(event_count=0).delete()
         return redirect("dashboard")
     
     else:
