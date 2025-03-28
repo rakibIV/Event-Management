@@ -36,7 +36,7 @@
   {% comment %} Upcoming event section {% endcomment %}
   <section class="px-4">
     <h2 class="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 border-b pb-4 border-gray-200">
       {% for event in up_events %}
       <div class=" bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm  hover:shadow-lg">
         <div class="relative h-48 w-full overflow-hidden flex items-center justify-center bg-gray-100">
@@ -81,13 +81,13 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
-        
-        <p class="text-gray-600 mb-4 line-clamp-2">
-            {{ event.description }}
-        </p>
-        
-        <div class="flex items-center space-x-2">
+            </div>
+            
+            <p class="text-gray-600 mb-4 line-clamp-2">
+                {{ event.description }}
+            </p>
+            
+            <div class="flex items-center space-x-2">
             <form action="{% url 'rsvp-now' event.id %}" method="POST" class="flex-grow">
                 {% csrf_token %}
                 {% if request.user in event.participants.all %}
