@@ -199,7 +199,6 @@ def rsvp_now(request,event_id):
 
 
 
-@login_required(login_url='sign-in')
 def event_details(request,id):
     event = Event.objects.get(id=id)
     return render(request,'event_details.html',{"event":event})
