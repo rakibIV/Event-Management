@@ -59,7 +59,7 @@ def sign_in(request):
         else:
             messages.error(request,"Username or password is incorrect")
         
-    return render(request,'registration/login.html', {})
+    return render(request,'Registration/login.html', {})
 
 
 @login_required(login_url='sign-in')
