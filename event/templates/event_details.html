@@ -1,0 +1,113 @@
+{% extends "navbar.html" %}
+{% block title %} {{ event.name }} Details {% endblock title %}
+
+{% block event %}
+<div class="pt-14">
+    <div class="container mx-auto">
+        <div class="min-h-screen">
+            <main class="flex-1 p-10">
+                
+                
+
+                {% comment %} Event Details Card {% endcomment %}
+                <div class="bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
+                    <div class = "mb-10">
+                        <h1 class="text-3xl font-bold text-gray-800">{{ event.name }}</h1>
+                        <p class="text-gray-600 mt-2 underline decoration-gray-500 decoration-4">{{ event.category.name }} Event</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        
+                        <div class="bg-gray-100 rounded-lg h-80 flex items-center justify-center">
+                            {% if event.image %}
+                                <img src="{{ event.image.url }}" alt="{{ event.name }}" class="w-full h-full object-cover rounded-lg">
+                            {% else %}
+                                <i class="fa-solid fa-image text-6xl text-gray-400"></i>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <div class="mb-6">
+                                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Event Details</h2>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-4">
+                                        <i class="fa-solid fa-calendar text-blue-500"></i>
+                                        <div>
+                                            <p class="font-medium text-gray-700">Date</p>
+                                            <p class="text-gray-600">{{ event.date|date:"F d, Y" }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <i class="fa-solid fa-clock text-green-500"></i>
+                                        <div>
+                                            <p class="font-medium text-gray-700">Time</p>
+                                            <p class="text-gray-600">{{ event.time|time:"h:i A" }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <i class="fa-solid fa-location-dot text-red-500"></i>
+                                        <div>
+                                            <p class="font-medium text-gray-700">Location</p>
+                                            <p class="text-gray-600">{{ event.location }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <i class="fa-solid fa-tag text-purple-500"></i>
+                                        <div>
+                                            <p class="font-medium text-gray-700">Category</p>
+                                            <p class="text-gray-600">{{ event.category.name }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <i class="fa-solid fa-users text-indigo-500"></i>
+                                        <div>
+                                            <p class="font-medium text-gray-700">Participants</p>
+                                            <p class="text-gray-600">{{ event.participants.count }} Registered</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                            <div class="flex space-x-4 mt-6">
+                                {% if user in event.participants.all %}
+                                    <a href="{% url 'rsvp-now' event.id %}" 
+                                       class="flex-1 text-center px-4 py-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                                        Cancel RSVP
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'rsvp-now' event.id %}" 
+                                       class="flex-1 text-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                        RSVP Now
+                                    </a
+                                    >
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% comment %} Event Description {% endcomment %}
+                    <div class="mt-8 border-t pt-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">About this Event</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            {{ event.description }}
+                        </p>
+                    </div>
+
+                    {% comment %} Category Description {% endcomment %}
+                    <div class="mt-6 border-t pt-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Category Information</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            {{ event.category.description }}
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock event %}

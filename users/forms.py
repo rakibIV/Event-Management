@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import re
 
 class StyledFormMixin:
@@ -117,3 +117,7 @@ class CustomRegistrationForm(StyledFormMixin,forms.ModelForm):
             raise forms.ValidationError("Password do not matched")
         
         return cleaned_data
+    
+    
+class AssignRoleForm(forms.Form):
+    role = forms.ModelChoiceField(queryset=Group.objects.all(), empty_label="Select Role")

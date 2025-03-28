@@ -1,0 +1,59 @@
+{% extends 'navbar.html' %}
+{% block title %}{{group.name}}Details{% endblock title %}
+{% block event %}
+
+
+<div class="container mx-auto py-8 mt-14">
+    <div class="bg-white shadow-md rounded-lg ">
+        <div class="bg-gray-50 py-4 border-b border-gray-200">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 pl-4">Edit Group: {{ group.name }}</h2>
+        </div>
+        
+        
+        <form method="POST" class="space-y-6 p-6">
+            {% csrf_token %}
+            
+
+            <div class="w-1/4">
+            <label class="block text-2xl  text-gray-700">Group Name : </label>
+            <input 
+                type="text" 
+                name="group_name" 
+                value="{{ group.name }}" 
+                class="outline-none p-3 mt-1 border-b-2 block w-full focus:border-b-2 focus:border-blue-300  border-gray-300 shadow-sm  transition-transform duration-400">
+            </div>
+            
+
+            <div>
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Assign Permissions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for permission in all_permissions %}
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            name="permissions" 
+                            value="{{ permission.id }}" 
+                            {% if permission in current_permissions %}checked{% endif %}
+                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        >
+                        <label 
+                            class="ml-2 block text-sm text-gray-900"
+                        >
+                            {{ permission.name }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="pt-6 w-1/4 mx-auto">
+                <button 
+                    type="submit" 
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Update Group Permissions
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

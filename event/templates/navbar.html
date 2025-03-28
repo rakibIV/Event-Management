@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -28,10 +27,11 @@
 		  </div>
 		  <!-- Navigation Links -->
 		  <div class="hidden md:flex space-x-6">
-			<a href="{% url 'dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
+      <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+			<a href="{% url 'redirect-dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
 			<a href="{% url "create_event" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Create Event</a>
-			<a href="{% url "add_category" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Add Category</a>
-			<a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+			<a href="{% url "category-page" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Category</a>
+			
 		  </div>
 		  <!-- Login Button -->
        <div class="hidden md:flex space-x-4">
@@ -63,18 +63,36 @@
 		  </div>
 		</div>
 		<!-- Mobile Menu -->
-		<div id="mobile-menu" class="hidden md:hidden flex-col space-y-4 px-4 pb-4">
-		  <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
-		  <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Create Event</a>
-		  <a href="#about-us" class="text-gray-700 hover:text-indigo-600 font-medium">About Us</a>
-		  <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
-		  <a class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 active:bg-gray-600 transition duration-300">
-			Log In
-		  </a>
-		  <a class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 active:bg-gray-600 transition duration-300">
-			Sign UP
-		  </a>
-		</div>
+		<div id="mobile-menu" class="hidden md:hidden flex-col items-center space-y-4 px-6 pb-6 bg-white shadow-md absolute top-16 left-0 w-full z-50">
+      <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+			<a href="{% url 'redirect-dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
+			<a href="{% url "create_event" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Create Event</a>
+      <a href="{% url "category-page" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Category</a>
+      
+
+			
+  
+      {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST" class="w-full text-center">
+            {% csrf_token %}
+            <button class="w-3/4 bg-red-500 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-red-600 transition">
+                Logout
+            </button>
+        </form>
+      {% else %}
+        <div class="flex flex-col w-full items-center space-y-3">
+            <a href="{% url 'sign-in' %}" 
+              class="w-3/4 text-center bg-indigo-600 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-indigo-700 transition">
+                Log In
+            </a>
+            <a href="{% url 'sign-up' %}" 
+              class="w-3/4 text-center bg-white text-indigo-600 text-lg font-medium px-5 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-600 hover:text-white transition">
+                Sign Up
+            </a>
+        </div>
+      {% endif %}
+  </div>
+  
 	  </nav>
 	  <script>
       
@@ -93,38 +111,47 @@
 
 
 
-        <footer class="bg-gray-800 text-gray-200 py-6 mt-12">
+        <footer class="bg-gray-900 text-gray-200 py-8 mt-12">
           <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-
-              <div class="mb-4 md:mb-0">
-                <h1 class="text-center md:text-left text-xl font-bold">Eventifyer</h1>
-                <p class="text-sm">© 2025 Eventifyer. All rights reserved.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+              
+              <div class="text-center md:text-left">
+                <h1 class="text-2xl font-bold mb-2">Eventifyer</h1>
+                <p class="text-sm text-gray-400">© 2025 Eventifyer. All rights reserved.</p>
               </div>
-              <!-- Center Section: Links -->
-              <div class="flex space-x-4 mb-4 md:mb-0">
-                <a href="#" class="hover:underline">About Us</a>
-                <a href="#" class="hover:underline">Contact</a>
-                <a href="#" class="hover:underline">Privacy Policy</a>
-                <a href="#" class="hover:underline">Terms of Service</a>
+        
+              
+              <div class="flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-6 text-center">
+                <a href="#" class="text-gray-300 hover:text-white transition duration-300">About Us</a>
+                <a href="#" class="text-gray-300 hover:text-white transition duration-300">Contact</a>
+                <a href="#" class="text-gray-300 hover:text-white transition duration-300">Privacy Policy</a>
+                <a href="#" class="text-gray-300 hover:text-white transition duration-300">Terms of Service</a>
               </div>
-              <!-- Right Section: Social Links -->
-              <div class="flex space-x-4">
-                <a href="#" aria-label="Facebook" class="hover:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M22 12A10 10 0 1 0 12 22 10 10 0 0 0 22 12ZM12 2A10 10 0 1 1 2 12 10 10 0 0 1 12 2ZM13.77 7.64H11.54v2h1.86c-.09 1.08-.18 2.18-.27 3.27h-1.59v5.09h-2.31v-5.09h-1.4V9.64h1.4v-1.44A3.13 3.13 0 0 1 12.77 5.9h1V7.64Z" />
-                  </svg>
+        
+              
+              <div class="flex justify-center md:justify-end space-x-5">
+                <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-blue-500 transition duration-300">
+                  <i class="fab fa-facebook-f text-2xl"></i>
                 </a>
-                <a href="#" aria-label="Twitter" class="hover:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M22 5.65a8.28 8.28 0 0 1-2.36.65A4.15 4.15 0 0 0 21.42 4a8.33 8.33 0 0 1-2.63 1A4.13 4.13 0 0 0 16 3a4.14 4.14 0 0 0-4.12 4.12c0 .33.04.66.1.97A11.74 11.74 0 0 1 3.18 3.7a4.1 4.1 0 0 0-.56 2.08 4.12 4.12 0 0 0 1.84 3.43A4.09 4.09 0 0 1 2 8.93v.05a4.12 4.12 0 0 0 3.31 4.05A4.17 4.17 0 0 1 3.15 13a4.12 4.12 0 0 0 3.85 2.85A8.3 8.3 0 0 1 2 19a11.74 11.74 0 0 0 6.36 1.86c7.63 0 11.79-6.32 11.79-11.8 0-.18-.01-.37-.02-.55A8.44 8.44 0 0 0 22 5.65Z" />
-                  </svg>
+                <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                  <i class="fab fa-twitter text-2xl"></i>
                 </a>
-                <a href="#" aria-label="Instagram" class="hover:text-pink-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M7.5 2A5.5 5.5 0 0 0 2 7.5v9A5.5 5.5 0 0 0 7.5 22h9A5.5 5.5 0 0 0 22 16.5v-9A5.5 5.5 0 0 0 16.5 2ZM12 6.75a5.25 5.25 0 1 1-5.25 5.25A5.26 5.26 0 0 1 12 6.75ZM18 7.5a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 18 7.5ZM12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4Z" />
-                  </svg>
+                <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-pink-500 transition duration-300">
+                  <i class="fab fa-instagram text-2xl"></i>
                 </a>
+                <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                  <i class="fab fa-linkedin-in text-2xl"></i>
+                </a>
+              </div>
+            </div>
+        
+            
+            <hr class="border-gray-700 my-6 md:hidden">
+        
+            
+            <div class="md:hidden text-center space-y-4">
+              <div class="text-sm text-gray-400">
+                <p>Connect with us on social media</p>
               </div>
             </div>
           </div>

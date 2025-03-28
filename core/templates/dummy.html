@@ -1,0 +1,72 @@
+{% extends "navbar.html" %}
+{% block title %} Eventifyer Reviews {% endblock title %}
+
+{% block event %}
+<div class="container mx-auto px-4 py-12 mt-14">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Eventifyer Reviews</h1>
+            <p class="text-gray-600 text-lg">Hear what our customers say about their experience with Eventifyer</p>
+        </header>
+
+        <div class="bg-white shadow-lg rounded-xl p-8 mb-10">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">4.7 <span class="text-xl text-gray-500">/5.0</span></h2>
+                    
+                </div>
+                <div class="text-right">
+                    <p class="text-green-600 font-bold text-xl">98% Recommend</p>
+                    <p class="text-gray-500">Based on 342 verified reviews</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        RK
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Rahat Khan Pathan</h4>
+                        <p class="text-gray-500 text-sm">Instructor Phitron</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 italic mb-4">"Exceptional Platform"</p>
+                <p class="text-gray-600">
+                    Eventifyer has transformed how we manage corporate events. The intuitive interface and robust features make event planning seamless and efficient.
+                </p>
+            </div>
+
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        JM
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">Jhankar Mahbub</h4>
+                        <p class="text-gray-500 text-sm">Founder of PH</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 italic mb-4">"Great for Large Events"</p>
+                <p class="text-gray-600">
+                    Impressive platform with multiple integration options. The participant management system is a game-changer for large-scale events.
+                </p>
+            </div>
+        </div>
+
+        
+
+        <div class="text-center mt-10">
+            <h3 class="text-2xl font-bold mb-4">Share Your Experience</h3>
+            <p class="text-gray-600 mb-6">Have you used Eventifyer? We'd love to hear about your experience!</p>
+            <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
+                Write a Review
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock event %}

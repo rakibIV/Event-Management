@@ -1,7 +1,7 @@
 {% extends "navbar.html" %}
 {% load static %}
 
-{% block title %}Category Form{% endblock title %}
+{% block title %}Event Dashboard{% endblock title %}
 
 {% block event %}
 <div class="max-width-[1400px] w-[90%] mx-auto pt-14 mt-8">
@@ -10,7 +10,7 @@
     <!-- Stats Grid -->
 
     <div class="container mx-auto px-4">
-        {% if messages %}
+        {% comment %} {% if messages %}
             <div class="flex items-center px-4 py-3 mb-4 rounded-lg shadow-md  bg-green-400 text-white mt-5">
                 
                     {% for message in messages %}
@@ -18,7 +18,7 @@
                     {% endfor %}
                 
             </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-12">
           <!-- Total Event -->
           <a href="{% url 'dashboard' %}?type=all" class="">
@@ -46,7 +46,7 @@
                 TOTAL PARTICIPANTS
               </h2>
               <div class="flex items-center justify-between">
-                <p class="text-2xl md:text-3xl font-semibold mb-1">15</p>
+                <p class="text-2xl md:text-3xl font-semibold mb-1">{{partcipants|length}}</p>
                 <button
                   class="w-8 h-8 md:w-10 md:h-10 text-lg md:text-xl bg-gray-100 text-gray-500 rounded-full drop-shadow-sm flex items-center justify-center"
                 >
@@ -97,8 +97,9 @@
 
       <hr class="border-b border-gray-100 border-dashed mt-8 mb-5" />
 
-      <div class="container mx-auto px-4 mt-8 md:mt-12 grid md:grid-cols-2">
-        <div></div>
+      <div class="container mx-auto px-4 mt-8 md:mt-12 grid md:grid-cols-2 items-center">
+        <div>
+        </div>
 
         <div class="w-full max-w-md ml-auto md:text-right">
           <form class="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-300 py-4"
@@ -131,11 +132,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               <div class="relative h-48 md:h-full">
-                <img 
-                  class="w-full h-full object-cover" 
-                  src="{% static 'images/party.jpg' %}" 
-                  alt="Event party" 
-                />
+                {% if event.image %}
+                <img src="{{ event.image.url }}" class="w-full h-full object-cover absolute top-0 left-0">
+                {% else %}
+                <div class="flex items-center justify-center w-full h-full">
+                    <i class="fa-solid fa-image text-6xl text-gray-400"></i>
+                </div>
+                {% endif %}
               </div>
       
               
@@ -144,7 +147,7 @@
                 <div class="flex justify-between text-lg md:text-xl mb-4">
                   <div class="flex items-center gap-2">
                     <i class="fa-solid fa-user"></i>
-                    <span>5</span>
+                    <span>{{event.participants.count}}</span>
                   </div>
                   <div class="flex items-center gap-2">
                     <i class="fa-solid fa-location-dot"></i>
@@ -166,19 +169,20 @@
                 
                 <div class="grid grid-cols-2 gap-4 mt-4">
                   
-                  <a href="{% url "update_event" event.id%}"
-                    
-                    class="flex items-center justify-center gap-2 bg-gray-600 text-white border border-gray-300 hover:bg-white hover:text-gray-500 hover:border-gray-500 px-3 py-2 rounded cursor-pointer"
-                  >
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    
-                    <span>Edit</span>
+                    <a href="{% url "update_event" event.id%}"
+                    class="flex items-center justify-center gap-2 bg-gray-600 text-white border border-gray-300 hover:bg-white hover:text-gray-500 hover:border-gray-500 px-3 py-2 rounded cursor-pointer">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                      
+                      <span>Edit</span>
                   
                   </a>
-                  <form action="{% url "delete_event" event.id %}" method="POST" class="flex items-center justify-center gap-2 bg-red-600 text-white border border-red-500 hover:bg-white hover:text-red-500 hover:border-red-500 px-3 py-2 rounded cursor-pointer">
+                  
+                  
+                  
+                  <form action="{% url "delete_event" event.id %}" method="POST" class="flex space-x-4">
                     {% csrf_token %}
                     <button type = "submit"
-                    
+                    class="flex items-center justify-center gap-2 bg-red-600 text-white border border-red-500 hover:bg-white hover:text-red-500 hover:border-red-500 rounded cursor-pointer px-7"
                     
                   >
                     <i class="fa-solid fa-trash"></i>
@@ -193,7 +197,6 @@
           </div>
           {% endfor %}
       
-          <!-- Second Card -->
     
           
           

@@ -1,0 +1,153 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+{% block event %}
+<div class="max-w-[1400px] w-[90%] mx-auto mt-5">
+  <!-- Top Section -->
+  <section class="px-4 min-h-[75vh] flex flex-col justify-center">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+      <!-- Left side box -->
+      <div class="order-2 md:order-1 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold ">
+          Your Event <br />
+          <span class="inline-block my-2"></span>
+          Our Effort...
+        </h1>
+        <a href="{% url 'dummy' %}"
+          class="inline-block justify-between mt-6 bg-blue-700 text-white border border-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 px-8 py-3 rounded transition duration-300 ease-in-out text-lg">
+          <span>Take a look</span>
+          <i class="text-base fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+  
+      <!-- Image section -->
+      <div class="order-1 md:order-2">
+        <img 
+          class="mx-auto md:mx-0 object-contain max-h-[50vh]" 
+          src="{% static 'images/top.png' %}" 
+        />
+      </div>
+    </div>
+    <hr class="border-b border-gray-200 border-dashed mt-8" />
+  </section>
+  
+  
+  {% comment %} Upcoming event section {% endcomment %}
+  <section class="px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for event in up_events %}
+      <div class=" bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm  hover:shadow-lg">
+        <div class="relative h-48 w-full overflow-hidden flex items-center justify-center bg-gray-100">
+          {% if event.image %}
+          <img src="{{ event.image.url }}" class="w-full h-full object-cover absolute top-0 left-0">
+          {% else %}
+          <div class="flex items-center justify-center w-full h-full">
+              <i class="fa-solid fa-image text-6xl text-gray-400"></i>
+          </div>
+          {% endif %}
+          <div class="absolute top-4 right-4 bg-white/80 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
+              {{ event.category.name }}
+          </div>
+      </div>
+    
+          <div class="p-6">
+              <div class="flex justify-between items-start mb-4">
+                  <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ event.name }}</h3>
+                
+                <div class="flex-col text-gray-600 space-y-2">
+                    <div class="flex items-center text-sm">
+                        <i class="fa-regular fa-calendar text-blue-500 mr-2"></i>
+                        {{ event.date|date:"F d, Y" }}
+                    </div>
+                    <div class="flex items-center text-sm">
+                        <i class="fa-solid fa-location-dot text-blue-500 mr-2"></i>
+                        {{ event.location }}
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-gray-500">Participants</span>
+                <div class="flex -space-x-2 mt-1">
+                    {% for participant in event.participants.all|slice:":4" %}
+                        <div class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-medium">{{participant.first_name.upper|slice:1}}</div>
+                    {% endfor %}
+                    {% if event.participants.count > 4 %}
+                        <div class="w-6 h-6 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-xs font-medium">
+                            +{{ event.participants.count|add:"-4" }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-gray-600 mb-4 line-clamp-2">
+            {{ event.description }}
+        </p>
+        
+        <div class="flex items-center space-x-2">
+            <form action="{% url 'rsvp-now' event.id %}" method="POST" class="flex-grow">
+                {% csrf_token %}
+                {% if request.user in event.participants.all %}
+                <button type="submit" class="w-full py-2 px-4 bg-red-50 text-red-600 rounded-lg border border-red-200 hover:bg-red-100 transition duration-300 font-semibold">
+                    Cancel RSVP
+                </button>
+                {% else %}
+                <button type="submit" class="w-full py-2 px-4 bg-blue-50 text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-100 transition duration-300 font-semibold">
+                    RSVP Now
+                </button>
+                {% endif %}
+            </form>
+            <a href="{% url 'event-details' event.id %}" class="p-2 text-gray-500 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 rounded-lg transition duration-300">
+              <i class="fa-solid fa-info-circle text-xl text-gray-500 bg-transparent"></i>
+          </a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+    </div>
+  </section>
+  
+  <section class="px-4 mt-12">
+    <h2 class="text-3xl font-bold text-center mb-8">What Our Clients Say</h2>
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Amazing event management! Our wedding was perfect thanks to their attention to detail."</p>
+        <p class="text-right text-gray-600 mt-4">- Rahat Khan</p>
+      </div>
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Professional and reliable. Our corporate event was a huge success."</p>
+        <p class="text-right text-gray-600 mt-4">- Jhankar Mahbub</p>
+      </div>
+      <div class="bg-indigo-100 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-800">"Highly recommend! They made our conference run smoothly and efficiently."</p>
+        <p class="text-right text-gray-600 mt-4">- Asif Adnan</p>
+      </div>
+    </div>
+  </section>
+  
+    {% comment %} contact {% endcomment %}
+  <section class="px-4 mt-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Get in Touch</h2>
+    <div class="container mx-auto max-w-xl">
+      <form class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
+          <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+          <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="mb-4">
+          <label for="message" class="block text-gray-700 font-bold mb-2">Message</label>
+          <textarea id="message" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-500 transition duration-300">Send Message</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock event %}
