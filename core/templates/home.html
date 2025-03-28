@@ -35,8 +35,9 @@
   
   {% comment %} Upcoming event section {% endcomment %}
   <section class="px-4">
-    <h2 class="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 border-b pb-4 border-gray-200">
+    <h2 class="text-3xl font-bold text-center mb-8 border-b pb-4 border-gray-200">Upcoming Events</h2>
+    {% if up_events %}
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for event in up_events %}
       <div class=" bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm  hover:shadow-lg">
         <div class="relative h-48 w-full overflow-hidden flex items-center justify-center bg-gray-100">
@@ -106,10 +107,13 @@
         </div>
     </div>
 </div>
-{% empty %}
-  <p class="text-gray-500 text-center">You haven't booked any events yet.</p>
 {% endfor %}
     </div>
+    {% else %}
+      <p class="text-gray-500 text-center text-lg">There is no upcoming events.</p>
+    {% endif %}
+
+    
   </section>
   
   <section class="px-4 mt-12">
