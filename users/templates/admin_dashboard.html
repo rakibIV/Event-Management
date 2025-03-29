@@ -2,7 +2,7 @@
 {% block title %}Dashboard | Admin{% endblock title %}
 {% block event %}
 
-<div class="min-h-screen flex pt-14 mt-4">
+<div class="flex pt-14 mt-4">
     {% comment %} side nav {% endcomment %}
 
     <div class="hidden md:block w-64 bg-white shadow-[4px_4px_0_rgba(0,0,0,0),_-4px_4px_0_rgba(0,0,0,0),_0_-4px_6px_-2px_rgba(0,0,0,0.1)] p-6 space-y-6">
@@ -12,7 +12,7 @@
                 <h2 class="text-lg font-semibold text-gray-800">{{request.user.first_name}} {{user.last_name}}</h2>
            <p class="text-sm text-gray-500">{{user.username }}</p>
             </div>
-    </div>
+            </div>
 
         <nav class="space-y-2">
             <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
@@ -27,7 +27,7 @@
                 <i class="fa-solid fa-layer-group text-2xl mr-3"></i>
               Categories
             </a>
-     <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+            <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
                 <i class="fa-regular fa-user text-2xl mr-3"></i>
                 User Management
             </a>
@@ -35,7 +35,7 @@
     </div>
 
     {% comment %} main content {% endcomment %}
-    <main class="flex-1 p-10">
+    <main class="flex-1 p-10 overflow-auto">
         
         <header class="flex justify-between items-center mb-10">
             <div>
@@ -43,14 +43,14 @@
              <p class="text-gray-600">Welcome back, {{ request.user.username }}!</p>
             </div>
             <div class="">
-               <a href="{% url 'create_event' %}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-                  + Create New Event
+                <a href="{% url 'create_event' %}" class="bg-green-500 text-white px-3 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition">
+                    + Create New Event
                 </a>
             </div>
         </header>
 
         {% comment %} main dahsboard {% endcomment %}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">Total Events</h3>
@@ -87,36 +87,38 @@
                 <h2 class="text-2xl font-semibold text-gray-800">Upcoming Events</h2>
                 <a href="{% url 'dashboard' %}" class="text-blue-600 hover:underline">Manage All Events</a>
             </div>
-
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">Event Name</th>
-                        <th scope="col" class="px-6 py-3">Date</th>
-                        <th scope="col" class="px-6 py-3">Category</th>
-                     <th scope="col" class="px-6 py-3">Participants</th>
-                        <th scope="col" class="px-6 py-3">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in upcoming_events %}
-                    <tr class="bg-white border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium text-gray-900"><a href="{% url 'event-details' event.id %}" class="hover:underline cursor-pointer">{{ event.name }}</a></td>
-                        <td class="px-6 py-4">{{ event.date }}</td>
-                     <td class="px-6 py-4">{{ event.category.name }}</td>
-                        <td class="px-6 py-4">{{ event.participants.count }}</td>
-                        <td class="px-6 py-4 flex space-x-2">
-                            <a href="{% url 'update_event' event.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
-                        <form action="{% url 'delete_event' event.id %}" method="POST">
-                                {% csrf_token %}
-                                <button class="text-red-600 hover:text-red-900">Delete</button>
-                            </form>
-                            
-                    </td>
-                    </tr>
-                    {% endfor %}
-             </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Event Name</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
+                            <th scope="col" class="px-6 py-3">Category</th>
+                         <th scope="col" class="px-6 py-3">Participants</th>
+                            <th scope="col" class="px-6 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in upcoming_events %}
+                        <tr class="bg-white border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-900"><a href="{% url 'event-details' event.id %}" class="hover:underline cursor-pointer">{{ event.name }}</a></td>
+                            <td class="px-6 py-4">{{ event.date }}</td>
+                         <td class="px-6 py-4">{{ event.category.name }}</td>
+                            <td class="px-6 py-4">{{ event.participants.count }}</td>
+                            <td class="px-6 py-4 flex space-x-2">
+                                <a href="{% url 'update_event' event.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                            <form action="{% url 'delete_event' event.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                                </form>
+                                
+                        </td>
+                        </tr>
+                        {% endfor %}
+                 </tbody>
+                </table>
+            </div>
+            
         </section>
 
         {% comment %} Participaant and Category section {% endcomment %}
