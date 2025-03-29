@@ -25,7 +25,7 @@
         </a>
 			
 		  </div>
-		  <!-- Navigation Links -->
+
 		  <div class="hidden md:flex space-x-6">
       <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
 			<a href="{% url 'redirect-dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
@@ -63,35 +63,38 @@
 		  </div>
 		</div>
 		<!-- Mobile Menu -->
-		<div id="mobile-menu" class="hidden md:hidden flex-col items-center space-y-4 px-6 pb-6 bg-white shadow-md absolute top-16 left-0 w-full z-50">
-      <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
-			<a href="{% url 'redirect-dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
-			<a href="{% url "create_event" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Create Event</a>
-      <a href="{% url "category-page" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Category</a>
-      
-
-			
+     <div id="mobile-menu" class="hidden md:hidden">
+      <div class="flex flex-col items-center space-y-4 px-6 pb-6 bg-white shadow-md absolute top-16 left-0 w-full z-50">
+        <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+        <a href="{% url 'redirect-dashboard' %}" class="text-gray-700 hover:text-indigo-600 font-medium">Dashboard</a>
+        <a href="{% url "create_event" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Create Event</a>
+        <a href="{% url "category-page" %}" class="text-gray-700 hover:text-indigo-600 font-medium">Category</a>
+        
   
-      {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="POST" class="w-full text-center">
-            {% csrf_token %}
-            <button class="w-3/4 bg-red-500 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-red-600 transition">
-                Logout
-            </button>
-        </form>
-      {% else %}
-        <div class="flex flex-col w-full items-center space-y-3">
-            <a href="{% url 'sign-in' %}" 
-              class="w-3/4 text-center bg-indigo-600 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-indigo-700 transition">
-                Log In
-            </a>
-            <a href="{% url 'sign-up' %}" 
-              class="w-3/4 text-center bg-white text-indigo-600 text-lg font-medium px-5 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-600 hover:text-white transition">
-                Sign Up
-            </a>
-        </div>
-      {% endif %}
-  </div>
+        
+    
+        {% if user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="POST" class="w-full text-center">
+              {% csrf_token %}
+              <button class="w-3/4 bg-red-500 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-red-600 transition">
+                  Logout
+              </button>
+          </form>
+        {% else %}
+          <div class="flex flex-col w-full items-center space-y-3">
+              <a href="{% url 'sign-in' %}" 
+                class="w-3/4 text-center bg-indigo-600 text-white text-lg font-medium px-5 py-2 rounded-lg hover:bg-indigo-700 transition">
+                  Log In
+              </a>
+              <a href="{% url 'sign-up' %}" 
+                class="w-3/4 text-center bg-white text-indigo-600 text-lg font-medium px-5 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-600 hover:text-white transition">
+                  Sign Up
+              </a>
+          </div>
+        {% endif %}
+    </div>
+     </div>
+		
   
 	  </nav>
 	  <script>
