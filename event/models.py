@@ -1,7 +1,8 @@
 
 from django.db import models
-from django.contrib.auth.models import User
-
+from users.models import CustomUser
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
-    participants = models.ManyToManyField(User, related_name="events", blank=True)  # new field
+    participants = models.ManyToManyField(CustomUser, related_name="events", blank=True)  # new field
     image = models.ImageField(upload_to='event_asset', blank=True, null=True, default='event_asset/default.jpg')
     
     def __str__(self):

@@ -7,8 +7,13 @@ from datetime import date
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required, user_passes_test
 from users.views import is_admin
-from django.contrib.auth.models import User
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+User = get_user_model()
 # Create your views here.
+
 
 def is_manager(user):
     return user.groups.filter(name="Organizer").exists()
@@ -62,47 +67,37 @@ def dashboard(request):
     
 
 
-def book_now(request):
-    return render(request,"book_now.html")
 
 
-@login_required(login_url='sign-in')
-@user_passes_test(is_manager_or_admin,login_url='no-permission')
-def create_event(request):
-    form = EventModelForm()
-    if request.method == "POST":
-        form = EventModelForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Event Created Successfully")
-            return redirect("create_event")
-
+class CreateEventView(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+    model = Event
+    form_class = EventModelForm
+    template_name = 'user-input/event-form.html'
+    login_url = 'sign-in'
+    success_url = reverse_lazy('redirect-dashboard')
     
-    context = {
-        "form" : form,
-    }
-    
-    return render(request,"user-input/event-form.html", context)
+    def test_func(self):
+        return is_manager_or_admin(self.request.user)
+    def handle_no_permission(self):
+        return redirect('no-permission')
 
-@login_required(login_url='sign-in')
-@user_passes_test(is_manager_or_admin,login_url='no-permission')
-def update_event(request, id):
-    event = Event.objects.get(id=id)
-    if request.method == "POST":
-        print("inside update event.....")
-        form = EventModelForm(request.POST,request.FILES, instance=event)
-        if form.is_valid():
-            form.save()
-            # messages.success(request, "Event Updated Successfully")
-            return redirect("redirect-dashboard")
-    else:
-        form = EventModelForm(instance=event)
 
-    context = {
-        "form": form,
-    }
-    
-    return render(request, "user-input/event-form.html", context)
+
+
+class UpdateEventView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Event
+    form_class = EventModelForm
+    template_name = 'user-input/event-form.html'
+    login_url = 'sign-in'
+    success_url = reverse_lazy('redirect-dashboard')
+    pk_url_kwarg = 'id'
+    def test_func(self):
+        return is_manager_or_admin(self.request.user)
+    def handle_no_permission(self):
+        return redirect('no-permission')
+
+
+
 @login_required(login_url='sign-in')
 @user_passes_test(is_manager_or_admin,login_url='no-permission')
 def delete_event(request,id):
@@ -117,6 +112,18 @@ def delete_event(request,id):
     else:
         # messages.error(request,"something went wrong!")
         return redirect("redirect-dashboard")
+    
+    
+class DeleteEventView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Event
+    success_url = reverse_lazy('redirect-dashboard')
+    login_url = 'sign-in'
+    pk_url_kwarg = 'id'
+    
+    def test_func(self):
+        return is_manager_or_admin(self.request.user)
+    def handle_no_permission(self):
+        return redirect('no-permission')
 
 
 

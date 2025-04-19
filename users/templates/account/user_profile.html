@@ -1,0 +1,135 @@
+{% extends "navbar.html" %}
+
+{% block event %}
+<div class="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 mt-16">
+  <div class="max-w-7xl mx-auto">
+    
+    
+    <!-- Main Content Container -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <!-- Profile Section -->
+      <div class="md:flex">
+        <!-- Left Side - Profile Image -->
+        <div class="md:w-1/3 p-6 bg-gray-50 flex flex-col items-center">
+          <div class="mb-4">
+            <img 
+              src="{% if user.profile_image %}{{user.profile_image.url}}{% else %}https://www.svgrepo.com/show/381806/user.svg{% endif %}" 
+              alt="{{ user.username }}" 
+              class="h-40 w-40 rounded-full object-cover border-4 border-white shadow"
+            >
+          </div>
+          <h2 class="text-xl font-semibold">{{ user.first_name }} {{user.last_name}}</h2>
+          <p class="text-gray-500 text-sm">@{{ user.username }}</p>
+          
+          <!-- User stats -->
+          <div class="mt-6 w-full">
+            <div class="flex justify-between items-center border-b border-gray-200 py-3">
+              <span class="text-gray-600 text-sm">Joined</span>
+              <span class="text-gray-900 text-sm font-medium">{{ user.date_joined|date:"M d, Y" }}</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-200 py-3">
+              <span class="text-gray-600 text-sm">Last Login</span>
+              <span class="text-gray-900 text-sm font-medium">{{ user.last_login|date:"M d, Y" }}</span>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Right Side - User Info -->
+        <div class="md:w-2/3 p-6">
+          {% if form.non_field_errors %}
+            <div class="mb-4 p-4 bg-red-50 border border-red-400 rounded text-red-700">
+              {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if messages %}
+            <div class="mb-6">
+              {% for message in messages %}
+                <div class="p-4 {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-400{% elif message.tags == 'error' %}bg-red-50 text-red-700 border border-red-400{% else %}bg-blue-50 text-blue-700 border border-blue-400{% endif %} rounded">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Personal Info Section -->
+            <div class="mb-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+              
+              <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                <div>
+                  <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                  <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                
+                <div>
+                  <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                  <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                
+                <div>
+                  <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                  <input type="text" name="username" id="username" value="{{ user.username }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                  <input type="email" name="email" id="email" value="{{ user.email }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                
+                <div>
+                  <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                  <input type="text" name="phone_number" id="phone_number" value="{{ user.phone_number|default:'' }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                
+                <div>
+                  <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image</label>
+                  <input type="file" name="profile_image" id="profile_image" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Address -->
+            <div class="mb-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Address</h3>
+              <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Full Address</label>
+                <textarea name="address" id="address" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ user.address|default:'' }}</textarea>
+              </div>
+            </div>
+            
+            <!-- Bio -->
+            <div class="mb-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">About</h3>
+              <div>
+                <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+                <textarea name="bio" id="bio" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ user.bio|default:'' }}</textarea>
+                <p class="mt-2 text-sm text-gray-500">Brief description for your profile.</p>
+              </div>
+            </div>
+            
+            
+            <!-- Button -->
+            <div class="flex flex-col sm:flex-row sm:justify-between pt-5">
+              <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mb-3 sm:mb-0">
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Save Changes
+                </button>
+                <a href="#" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Change Password
+                </a>
+              </div>
+              
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

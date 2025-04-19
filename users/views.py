@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate,logout
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from users.forms import CustomRegistrationForm, AssignRoleForm
 from django.contrib import messages
 from django.contrib.auth.tokens import default_token_generator
@@ -9,6 +9,14 @@ from django.db.models import Count
 from datetime import date
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import models
+from django.views.generic import CreateView, UpdateView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+User = get_user_model()
+from users.forms import UserProfileForm
+from users.models import CustomUser
 
 
 # Create your views here.
@@ -39,7 +47,22 @@ def sign_up(request):
         "form":form
     }
     return render(request,'Registration/register.html',context)
-# 
+
+
+class SignUpView(CreateView):
+    form_class = CustomRegistrationForm
+    template_name = 'Registration/register.html'
+    success_url = reverse_lazy('sign-in')
+    
+    def form_valid(self, form):
+        user = form.save(commit=False)  
+        if form.cleaned_data['password1'] != form.cleaned_data['confirm_password']:
+            return self.form_invalid(form)
+        user.set_password(form.cleaned_data['password1'])  
+        user.save()
+        messages.success(self.request, "A confirmation email has been sent. Please check your email.")
+        return super().form_valid(form)
+    
 
 def sign_in(request):
     
@@ -61,12 +84,37 @@ def sign_in(request):
         
     return render(request,'Registration/login.html', {})
 
+class CustomLoginView(LoginView):
+    template_name = 'Registration/login.html'
+    redirect_authenticated_user = True
+    success_url = reverse_lazy('home')
+    
+    def post(self, request, *args, **kwargs):
+        
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-@login_required(login_url='sign-in')
-def sign_out(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect('home')
+        user = authenticate(request, username=username, password=password)
+
+        if user:
+           
+            login(request, user)
+            return redirect(self.get_success_url())
+
+        else:
+            messages.error(request, "Username or password is incorrect.")
+            return render(request, self.template_name)
+        
+    def get_success_url(self):
+        return self.request.GET.get('next') or self.success_url
+
+        
+
+
+    
+class LogoutView(LogoutView,LoginRequiredMixin):
+    login_url = 'sign-in'
+    
     
 def activate_user(request,user_id,token):
     user = User.objects.get(id=user_id)
@@ -220,4 +268,28 @@ def delete_participants(request,id):
         user = User.objects.get(id=id)
         user.events.clear()
         return redirect("redirect-dashboard")
+    
+    
+def user_profile(request):
+    return render(request,'account/user_profile.html',{})
+
+
+class UserProfileView(LoginRequiredMixin, UpdateView):
+    """View for displaying and updating user profile information."""
+    
+    model = CustomUser
+    form_class = UserProfileForm
+    template_name = 'account/user_profile.html'
+    success_url = reverse_lazy('user-profile')
+    
+    def get_object(self, queryset=None):
+        return self.request.user
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Profile updated successfully!")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Please correct the errors below.")
+        return super().form_invalid(form)
     

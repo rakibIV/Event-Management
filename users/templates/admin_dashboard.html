@@ -6,13 +6,18 @@
     {% comment %} side nav {% endcomment %}
 
     <div class="hidden md:block w-64 bg-white shadow-[4px_4px_0_rgba(0,0,0,0),_-4px_4px_0_rgba(0,0,0,0),_0_-4px_6px_-2px_rgba(0,0,0,0.1)] p-6 space-y-6">
+        
         <div class="flex items-center space-x-4 mb-8">
-            <div class="h-12 w-12 text-white text-xl bg-blue-500 rounded-full flex items-center justify-center">{{user.first_name.upper|slice:1}}</div>
+            <a href="{% url 'user-profile' %}">
+                <div class="h-12 w-12 text-white text-xl bg-blue-500 rounded-full flex items-center justify-center">{{user.first_name.upper|slice:1}}</div>
+            </a>
             <div>
-                <h2 class="text-lg font-semibold text-gray-800">{{request.user.first_name}} {{user.last_name}}</h2>
-           <p class="text-sm text-gray-500">{{user.username }}</p>
+                <a href="{% url 'user-profile' %}">
+                    <h2 class="text-lg font-semibold text-gray-800">{{request.user.first_name}} {{user.last_name}}</h2>
+                </a>
+                <p class="text-sm text-gray-500">{{user.username }}</p>
             </div>
-            </div>
+        </div>
 
         <nav class="space-y-2">
             <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">

@@ -1,6 +1,9 @@
 from django import forms
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 import re
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class StyledFormMixin:
     
@@ -121,3 +124,42 @@ class CustomRegistrationForm(StyledFormMixin,forms.ModelForm):
     
 class AssignRoleForm(forms.Form):
     role = forms.ModelChoiceField(queryset=Group.objects.all(), empty_label="Select Role")
+    
+    
+    
+    
+from django import forms
+from .models import CustomUser
+
+
+class UserProfileForm(forms.ModelForm):
+    """Form for updating user profile information."""
+    
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'username', 'email', 
+                 'phone_number', 'address', 'bio', 'profile_image']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
+            'address': forms.Textarea(attrs={'rows': 3}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+        
+        if not phone:
+            return phone
+            
+        if phone.startswith('+880') and len(phone) == 14:
+            return phone
+            
+        if not (phone.startswith('0') and len(phone) == 11):
+            raise forms.ValidationError(
+                "Phone number must be a valid Bangladeshi number starting with '01' and containing 11 digits."
+            )
+            
+        return '+880' + phone[1:]
