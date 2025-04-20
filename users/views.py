@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.models import Group, Permission
-from users.forms import CustomRegistrationForm, AssignRoleForm
+from users.forms import CustomRegistrationForm, AssignRoleForm, PassChangeForm, PassResetForm, PassResetConfirmForm
 from django.contrib import messages
 from django.contrib.auth.tokens import default_token_generator
 from event.models import Event,Category
@@ -10,7 +10,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import models
 from django.views.generic import CreateView, UpdateView
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
@@ -64,26 +64,6 @@ class SignUpView(CreateView):
         return super().form_valid(form)
     
 
-def sign_in(request):
-    
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        print("doc:",username,password)
-        
-        user = authenticate(request,username=username,password=password)
-        print("user:",user)
-        
-        if user:
-            login(request,user)
-            return redirect('home')
-        
-        else:
-            messages.error(request,"Username or password is incorrect")
-        
-    return render(request,'Registration/login.html', {})
-
 class CustomLoginView(LoginView):
     template_name = 'Registration/login.html'
     redirect_authenticated_user = True
@@ -114,7 +94,6 @@ class CustomLoginView(LoginView):
     
 class LogoutView(LogoutView,LoginRequiredMixin):
     login_url = 'sign-in'
-    
     
 def activate_user(request,user_id,token):
     user = User.objects.get(id=user_id)
@@ -270,13 +249,11 @@ def delete_participants(request,id):
         return redirect("redirect-dashboard")
     
     
-def user_profile(request):
-    return render(request,'account/user_profile.html',{})
 
 
 class UserProfileView(LoginRequiredMixin, UpdateView):
-    """View for displaying and updating user profile information."""
-    
+    """User profile view"""
+    login_url = 'sign-in'
     model = CustomUser
     form_class = UserProfileForm
     template_name = 'account/user_profile.html'
@@ -292,4 +269,36 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Please correct the errors below.")
         return super().form_invalid(form)
+    
+    
+    
+class CustomPasswordChangeView(LoginRequiredMixin,PasswordChangeView):
+    template_name = 'account/password_change.html'
+    form_class = PassChangeForm
+    
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'account/reset_password.html'
+    form_class = PassResetForm
+    success_url = reverse_lazy('user-profile')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocol'] = 'https' if self.request.is_secure() else 'http'
+        context['domain'] = self.request.get_host()
+        print(context)
+        return context    
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Password reset email sent. Please check your email.")
+        return super().form_valid(form)
+    
+    
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'account/reset_confirm.html'
+    form_class = PassResetConfirmForm
+    success_url = reverse_lazy('sign-in')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Password reset Successfully!")
+        return super().form_valid(form)
     

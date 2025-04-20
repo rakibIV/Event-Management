@@ -20,15 +20,15 @@
         </div>
 
         <nav class="space-y-2">
-            <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+            <a href="{% url 'redirect-dashboard' %}" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
                 <i class="fa-solid fa-house text-2xl mr-3"></i>
                 Dashboard
             </a>
-            <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+            <a href="{% url 'dashboard' %}" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
               <i class="fa-regular fa-calendar text-2xl font-thin mr-3"></i>
                 Events Management
            </a>
-          <a href="" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+          <a href="{% url 'category-page' %}" class="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
                 <i class="fa-solid fa-layer-group text-2xl mr-3"></i>
               Categories
             </a>
